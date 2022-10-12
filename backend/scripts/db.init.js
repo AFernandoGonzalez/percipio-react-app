@@ -8,8 +8,6 @@ dotenv.config()
 
 const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@coursesdb.51wwjr8.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
 
-console.log(URI);
-
 mongoose.connect(URI)
     .then(() => {
         console.log('DB Connected!')
@@ -29,47 +27,3 @@ mongoose.connect(URI)
         console.log('Cannot connect to DB', error)
     })
 
-
-// const connect = async () => {
-//     try {
-//         await mongoose.connect(URI);
-//         console.log('conected db');
-//     } catch (error) {
-//         throw error
-//     }
-// };
-
-// const connect = async () => {
-//     try {
-//         await mongoose.connect(URI);
-//         console.log(URI);
-//         console.log('conected db');
-//         User.inserMany(users, (error) => {
-//             if (error) {
-//                 console.error();
-//             }
-//         });
-//         Course.inserMany(courses, (error) => {
-//             if(error){
-//                 console.error(error);
-//             }
-//         })
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
-
-
-// db.once('open', () => {
-//     console.log('Database connection open');
-//     UserSchema.inserMany(users, (error) => {
-//         if (error) {
-//             console.error();
-//         }
-//     });
-//     CourseSchema.inserMany(courses, (error) => {
-//         if(error){
-//             console.error(error);
-//         }
-//     })
-// })
