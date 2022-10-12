@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 
 const CourseSchema = new mongoose.Schema({
-  user:  String, 
-  city: String
+  name:  String, 
+  weight: Number,
+  images: [String]
 });
 
 export default mongoose.model('Course', CourseSchema)
