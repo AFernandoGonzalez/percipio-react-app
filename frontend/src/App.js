@@ -6,15 +6,24 @@ import Footer from './shared/components/layout/Footer'
 // reducer
 import UserForm from './components/User/UserForm';
 
-function App() {
+// react router
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
+function App() {
 
   return (
     <div className="">
-      <Header title='Create user' />
-      <h1 className='container mt-4'>Users-Tracker</h1>
-      <UserForm />
-      <UserList />
+      <Header />
+      <div className='container'>
+        <h1 className='mt-4'>Users-Tracker</h1>
+      </div>
+      {/* <BrowserRouter> */}
+        <Routes>
+          <Route path='/' element={<UserList />} />
+          <Route path='/create-user' element={<UserForm />} />
+          <Route path='/edit-user/:id' element={<UserForm />} />
+        </Routes>
+      {/* </BrowserRouter> */}
       <Footer />
     </div>
   );

@@ -15,21 +15,32 @@ const initialState = [
     }
 ]
 
-export const taskSlice = createSlice({
+export const userSlice = createSlice({
     name: 'users',
     initialState,
     reducers: {
         addUser: (state, action) => {
             state.push(action.payload)
         },
+        updateUser: (state, action) => {
+            // console.log(action.payload);
+            const { id, username, age } = action.payload
+
+            const foundUser = state.find(user => user.id == id)
+            if(foundUser){
+                foundUser.username = username
+                foundUser.age = age
+            }
+
+        },
         deleteUser: (state, action) => {
             const userFound = state.find(user => user.id === action.payload)
-            if(userFound){
+            if (userFound) {
                 state.splice(state.indexOf(userFound), 1)
             }
         }
     }
 })
 
-export const { addUser, deleteUser } = taskSlice.actions
-export default taskSlice.reducer
+export const { addUser,updateUser, deleteUser } = userSlice.actions
+export default userSlice.reducer
