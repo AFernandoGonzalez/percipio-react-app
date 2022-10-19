@@ -52,19 +52,14 @@ export const getUserById = async (req, res) => {
     try {
         user = await User.findById(userId) || []
     } catch (error) {
-        res.json(error)
+        res.send(error)
     }
 
-    res.json(user.toObject({ getters: true }))
+    res.json(user)
 }
 
 export const getUsers = async (req, res) => {
-    let users;
-    try {
-        users = await User.find()
-    } catch (error) {
-        res.json(error);
-    }
+    const users = await User.find()
     res.json(users);
 }
 

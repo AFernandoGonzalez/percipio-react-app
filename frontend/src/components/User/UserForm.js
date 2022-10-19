@@ -5,47 +5,53 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useNavigate, useParams } from 'react-router';
 
+import { createUser } from '../../features/users/userSlice';
+import { fetchUsers } from '../../features/users/userSlice'
+
 const UserForm = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const params = useParams()
-    const userList = useSelector(state => state.users)
+    // const userList = useSelector(state => state.users)
 
-
-    const [userForm, setUserForm] = useState({
-        username: "",
-        age: 0,
-        employed: false
+    const [user, setUser] = useState({
+        user: "",
+        city: "",
     })
 
+    const { users } = useSelector(state => state.users)
+    console.log("user form: ", users);
 
+    console.log("user : ", user);
 
     const handleChange = (e) => {
-        setUserForm({
-            ...userForm,
+        setUser({
+            ...user,
             [e.target.name]: e.target.value
         })
+        console.log(" Values: ", e.target.value);
     }
 
     const hadleSubmit = (e) => {
         e.preventDefault()
         if (params.id) {
+            console.log('edit user');
             // we need to update
-            dispatch(updateUser(userForm))
+            dispatch(updateUser({ users }))
         } else {
-            dispatch(addUser({
-                id: uuidv4(),
-                ...userForm,
-            }))
+            dispatch(createUser({ user }))
         }
-        navigate('/')
+
+        // navigate('/')
     }
 
 
     useEffect(() => {
+        dispatch(fetchUsers())
         if (params.id) {
-            setUserForm(userList.find(user => user.id == params.id))
+            setUser(users.find(user => user.id == params.id))
+            // console.log("user effect: ", users.find(user => user._id == params.id))
         }
     }, [])
 
@@ -55,13 +61,15 @@ const UserForm = () => {
             <h4>Add User</h4>
             <form onSubmit={hadleSubmit} >
                 <div className="mb-3">
-                    <label className="form-label">Username</label>
-                    <input name='username' value={userForm.username} type="text" onChange={handleChange} className="form-control" />
+                    <label className="form-label">User</label>
+                    <input name='user' value={user.user} type="text" onChange={handleChange} className="form-control" />
+                    {/* <input name='user' type="text" onChange={handleChange} className="form-control" /> */}
 
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Age</label>
-                    <input name='age' value={userForm.age} type="number" onChange={handleChange} className="form-control" />
+                    <label className="form-label">City</label>
+                    <input name='city' value={users.city} type="text" onChange={handleChange} className="form-control" />
+                    {/* <input name='city' type="text" onChange={handleChange} className="form-control" /> */}
                 </div>
 
                 <button type="submit" className="btn btn-primary">Add User</button>
