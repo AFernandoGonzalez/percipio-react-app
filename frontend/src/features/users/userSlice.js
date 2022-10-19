@@ -38,15 +38,16 @@ export const createUser = createAsyncThunk('users/createUsers', async ({ user })
     return response.data
 })
 
-export const updateUser = createAsyncThunk('users/updateUser', async ({id, user}) => {
-    // const response = await axios.put(`http://localhost:8000/v1/users/${id}`, {
-    //     user: user.user, city: user.city
-    // })
-    // // const data = response.data
-    // console.log("updateUser Data: ", response.data);
-    // return response.data
-   
-    console.log('updateUser: ', {id ,user: user.user, city: user.city})
+export const updateUser = createAsyncThunk('users/updateUser', async ({ user }) => {
+    const response = await axios.put(`http://localhost:8000/v1/users/${user._id}`, {
+        user: user.user, city: user.city
+    })
+    // const data = response.data
+    console.log("updateUser Response: ", response);
+    console.log("updateUser Data: ", response.data);
+    console.log('updateUser: ', { id: user._id, user: user.user, city: user.city })
+    return response.data
+
 })
 export const deleteUser = createAsyncThunk('users/deleteUsers', async (id) => {
     const response = await axios.delete(`http://localhost:8000/v1/users/${id}`);

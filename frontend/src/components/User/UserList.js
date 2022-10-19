@@ -3,29 +3,21 @@ import './user.css'
 import { useSelector, useDispatch } from 'react-redux'
 // import { deleteUser } from '../../features/users/userSlice'
 import { Link } from 'react-router-dom'
-
 // 
 import { fetchUsers, deleteUser } from '../../features/users/userSlice'
-
 
 const UserList = () => {
   const { users } = useSelector(state => state.users)
 
   const dispatch = useDispatch();
 
-
-
   useEffect(() => {
     dispatch(fetchUsers())
   }, [])
 
-
-
-  console.log("users list: ", users);
-
+  // console.log("users list: ", users);
 
   const handleDelete = (e, id) => {
-
     dispatch(deleteUser(id))
     console.log('deleted', id);
   }
@@ -33,11 +25,11 @@ const UserList = () => {
   return (
     <div className='container mt-4'>
       <hr></hr>
-      <h4>Total Users {users.length}</h4>
+          <h4>Total Users {users?.length}</h4>
       <Link to='create-user'>
         <button type="button" className="btn btn-success m-1">Crate User</button>
       </Link>
-      {users.length > 0 ?
+      {users?.length > 0 ?
         <>
           <div>
             {users?.map((user) => (

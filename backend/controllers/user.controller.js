@@ -55,7 +55,8 @@ export const getUserById = async (req, res) => {
         res.send(error)
     }
 
-    res.json(user)
+    // console.log("User by id api: ",user);
+    res.json(user.toObject({ getters: true}))
 }
 
 export const getUsers = async (req, res) => {

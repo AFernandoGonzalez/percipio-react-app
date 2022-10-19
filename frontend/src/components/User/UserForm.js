@@ -1,29 +1,25 @@
 import { React, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { addUser, deleteUser, updateUser } from '../../features/users/userSlice'
 import { v4 as uuidv4 } from 'uuid';
 
 import { useNavigate, useParams } from 'react-router';
 
-import { createUser } from '../../features/users/userSlice';
-import { fetchUsers } from '../../features/users/userSlice'
+import { createUser , updateUser} from '../../features/users/userSlice';
 
 const UserForm = () => {
+
+    const [user, setUser] = useState({
+        user: "",
+        city: ""
+    })
+
+    const {users } = useSelector( state => state.users )
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const params = useParams()
     // const userList = useSelector(state => state.users)
 
-    const [user, setUser] = useState({
-        user: "",
-        city: "",
-    })
-
-    const { users } = useSelector(state => state.users)
-    console.log("user form: ", users);
-
-    console.log("user : ", user);
 
     const handleChange = (e) => {
         setUser({
@@ -31,27 +27,35 @@ const UserForm = () => {
             [e.target.name]: e.target.value
         })
         console.log(" Values: ", e.target.value);
+        // console.log("----- user inside HC: ", user);
     }
 
+    console.log("----- user Outside: ", user);
     const hadleSubmit = (e) => {
         e.preventDefault()
         if (params.id) {
-            console.log('edit user');
+            // console.log('-----edit user');
+            // let u = users.find(user => user._id == params.id)
+            // console.log("edit user: ", u);
             // we need to update
-            dispatch(updateUser({ users }))
+            dispatch(updateUser({ user }))
+            console.log("----- user inside HS: ", user);
         } else {
             dispatch(createUser({ user }))
         }
 
-        // navigate('/')
+        navigate('/')
     }
 
 
     useEffect(() => {
-        dispatch(fetchUsers())
+        // dispatch(fetchUsers())
         if (params.id) {
-            setUser(users.find(user => user.id == params.id))
+            // let u = users.find(user => user._id == params.id)
+            // console.log("-----find user: ", u);
+            setUser(users.find(user => user._id == params.id))
             // console.log("user effect: ", users.find(user => user._id == params.id))
+            
         }
     }, [])
 
@@ -68,7 +72,7 @@ const UserForm = () => {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">City</label>
-                    <input name='city' value={users.city} type="text" onChange={handleChange} className="form-control" />
+                    <input name='city' value={user.city} type="text" onChange={handleChange} className="form-control" />
                     {/* <input name='city' type="text" onChange={handleChange} className="form-control" /> */}
                 </div>
 
