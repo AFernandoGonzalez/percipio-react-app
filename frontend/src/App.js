@@ -22,9 +22,9 @@ function App() {
       {/* <BrowserRouter> */}
         <Routes>
           <Route path='/' element={<UserList />} />
+          <Route path='/user/:id' element={<SingleUser />} />
           <Route path='/create-user' element={<CreateUserForm />} />
           <Route path='/edit-user/:id' element={<UpdateUserForm />} />
-          <Route path='/user/:id' element={<SingleUser />} />
         </Routes>
       {/* </BrowserRouter> */}
       <Footer />

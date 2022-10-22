@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { createUser, updateUser } from '../../features/users/userSlice';
+import { updateUser } from '../../features/users/userSlice';
 
 
 
@@ -12,42 +12,9 @@ const UpdateUserForm = () => {
     const navigate = useNavigate()
     const params = useParams()
 
-    // const [user, setUser] = useState({
-    //     user: "",
-    //     city: ""
-    // })
-
-    // const { users } = useSelector(state => state.users)
-    // console.log("state: ",users);
-
-    // const handleChange = (e) => {
-    //     setUser({
-    //         ...user,
-    //         [e.target.name]: e.target.value
-    //     })
-    // }
-    // const hadleSubmit = (e) => {
-    //     e.preventDefault()
-    //     if (params.id) {
-    //         dispatch(updateUser({userName, city}))
-    //     }
-    //     // navigate('/')
-    // }
-
-    // useEffect(() => {
-    //     if (params.id) {
-    //         setUser(users.find(user => user._id == params.id))
-    //     }
-    // }, [])
-
-
-
-
     const [userId, setUserId] = useState(params.id);
     const [userName, setUserName] = useState('');
     const [city, setCity] = useState('');
-
-    // console.log(userId);
 
     const retrieveUser = async () => {
         const data = dispatch(fetchUsersById(userId.toString()))
@@ -56,25 +23,23 @@ const UpdateUserForm = () => {
     }
 
     useEffect(() => {
-        const getCourse = async () => {
-            const user = await retrieveUser();
-            // setUserId(user._id)
-            setUserName(user.payload.user)
-            setCity(user.payload.city)
-            console.log("user: ", user.payload);
-            console.log("user: ", user.payload.user);
-            return user
+        const getUser = async () => {
+            const userInfo = await retrieveUser();
+            const {_id, user, city} = userInfo.payload
+            setUserId(_id)
+            setUserName(user)
+            setCity(city)
+            return userInfo
         }
-        getCourse();
+        getUser();
     }, [])
-
 
     const hadleSubmit = (e) => {
         e.preventDefault()
         if (params.id) {
             dispatch(updateUser({userId, userName, city}))
         }
-        // navigate('/')
+        navigate('/')
     }
 
     return (

@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react'
+import { React, useEffect, useState } from 'react'
 import './user.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -11,8 +11,7 @@ const UserList = () => {
 
   const handleDelete = (id) => {
     dispatch(deleteUser(id))
-    console.log('deleted', id);
-    // dispatch(fetchUsers())
+    // console.log('deleted', id);
   }
 
   useEffect(() => {
@@ -37,6 +36,7 @@ const UserList = () => {
                     <p><b>City:</b> {user.city}</p>
                   </div>
                   <button type="button" className="btn btn-danger m-1" onClick={() => handleDelete(user._id)}>Delete</button>
+                  {/* <button type="button" className="btn btn-danger m-1" onClick={() => dispatch(deleteUser(user._id))}>Delete</button> */}
                   <Link to={`/edit-user/${user._id}`}>
                     <button type="button" className="btn btn-secondary m-1">Update</button>
                   </Link>
