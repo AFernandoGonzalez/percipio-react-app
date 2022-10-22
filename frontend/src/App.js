@@ -4,7 +4,9 @@ import Header from './shared/components/layout/Header'
 import Footer from './shared/components/layout/Footer'
 
 // reducer
-import UserForm from './components/User/UserForm';
+import CreateUserForm from './components/User/CreateUserForm';
+import UpdateUserForm from './components/User/UpdateUserForm';
+import SingleUser from './components/User/SingleUser';
 
 // react router
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -20,8 +22,9 @@ function App() {
       {/* <BrowserRouter> */}
         <Routes>
           <Route path='/' element={<UserList />} />
-          <Route path='/create-user' element={<UserForm />} />
-          <Route path='/edit-user/:id' element={<UserForm />} />
+          <Route path='/create-user' element={<CreateUserForm />} />
+          <Route path='/edit-user/:id' element={<UpdateUserForm />} />
+          <Route path='/user/:id' element={<SingleUser />} />
         </Routes>
       {/* </BrowserRouter> */}
       <Footer />

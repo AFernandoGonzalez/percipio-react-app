@@ -19,8 +19,6 @@ import axios from 'axios'
 const initialState = {
     users: [],
     loading: false,
-    edit: false,
-    body: ''
 }
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
@@ -30,29 +28,39 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     return data
 })
 
+export const fetchUsersById = createAsyncThunk('users/fetchUsers', async (id) => {
+    const response = await axios.get(`http://localhost:8000/v1/users/${id}`);
+    const data = response.data
+    console.log("fetchUsersById Data: ", data);
+    return data
+})
+
 export const createUser = createAsyncThunk('users/createUsers', async ({ user }) => {
     const response = await axios.post(`http://localhost:8000/v1/users/`, {
         user: user.user, city: user.city
     });
-    console.log("userSlice Data createUser: ", response.data);
+    // console.log("userSlice Data createUser: ", response.data);
     return response.data
 })
 
-export const updateUser = createAsyncThunk('users/updateUser', async ({ user }) => {
-    const response = await axios.put(`http://localhost:8000/v1/users/${user._id}`, {
-        user: user.user, city: user.city
+export const updateUser = createAsyncThunk('users/updateUser', async (_id, userName, city ) => {
+    const response = await axios.put(`http://localhost:8000/v1/users/${_id}`, {
+        id: _id, user: userName, city : city
     })
     // const data = response.data
-    console.log("updateUser Response: ", response);
-    console.log("updateUser Data: ", response.data);
-    console.log('updateUser: ', { id: user._id, user: user.user, city: user.city })
+    // console.log("updateUser Response: ", response);
+    // console.log("updateUser Data: ", response.data);
+    // console.log('updateUser: ', { id: user._id, user: user.user, city: user.city })
+    console.log("updateUser",response.data)
     return response.data
 
 })
 export const deleteUser = createAsyncThunk('users/deleteUsers', async (id) => {
     const response = await axios.delete(`http://localhost:8000/v1/users/${id}`);
     const data = response.data
-    // console.log("userSlice Data: ", data);
+    console.log("deleteUser Data: ", response);
+    console.log("deleteUser Data: ", response.data);
+    console.log("endpoint: ", `http://localhost:8000/v1/users/${id}`);
     return data
 })
 
@@ -63,17 +71,15 @@ export const userSlice = createSlice({
         // addUser: (state, action) => {
         //     state.push(action.payload)
         // },
-        setEdit: (state, action) => {
-            // const { id, user, city } = action.payload
+        // setEdit: (state, action) => {
+        //     const { id, user, city } = action.payload
 
-            // const foundUser = state.find(user => user.id == id)
-            // if (foundUser) {
-            //     foundUser.user = user
-            //     foundUser.city = city
-            // }
-            state.edit = action.payload.edit
-            state.body = action.payload.body
-        },
+        //     const foundUser = state.find(user => user.id == id)
+        //     if (foundUser) {
+        //         foundUser.user = user
+        //         foundUser.city = city
+        //     }
+        // },
         // deleteUser: (state, action) => {
         //     const userFound = state.find(user => user.id === action.payload)
         //     if (userFound) {
@@ -99,6 +105,20 @@ export const userSlice = createSlice({
             // state.errors = action.error.message
             // console.log("rejected: ", action);
         },
+        // GET User By Id
+        [fetchUsersById.pending]: (state, action) => {
+            // state.loading = true
+            // console.log("pending: ", action);
+        },
+        [fetchUsersById.fulfilled]: (state, action) => {
+            state.users = action.payload
+        },
+        [fetchUsersById.rejected]: (state, action) => {
+            // state.loading = false
+            state.users = []
+            // state.errors = action.error.message
+            // console.log("rejected: ", action);
+        },
 
         // POST
         [createUser.pending]: (state, action) => {
@@ -109,7 +129,7 @@ export const userSlice = createSlice({
             state.users = action.payload
             // state.loading = false
             // state.errors = ''
-            console.log("createUser fulfilled: ", action.payload);
+            // console.log("createUser fulfilled: ", action.payload);
         },
         [createUser.rejected]: (state, action) => {
             // state.loading = false
@@ -127,7 +147,7 @@ export const userSlice = createSlice({
             state.users = action.payload
             // state.loading = false
             // state.errors = ''
-            console.log("updateUser fulfilled: ", action.payload);
+            // console.log("updateUser fulfilled: ", action.payload);
         },
         [updateUser.rejected]: (state, action) => {
             // state.loading = false
@@ -139,13 +159,15 @@ export const userSlice = createSlice({
         // DELETE
         [deleteUser.pending]: (state, action) => {
             // state.loading = true
-            // console.log("pending: ", action);
+            console.log("pending: ", action);
         },
         [deleteUser.fulfilled]: (state, action) => {
             state.users = action.payload
+            // state.users = state.users.filter( user=> user.id !== action.payload)
             // state.loading = false
             // state.errors = ''
-            // console.log("fulfilled: ", action);
+            console.log("fulfilled: ", action);
+
         },
         [deleteUser.rejected]: (state, action) => {
             // state.loading = false
@@ -157,5 +179,5 @@ export const userSlice = createSlice({
 })
 
 // export const { addUser, updateUser, deleteUser } = userSlice.actions
-export const { setEdit } = userSlice.actions
+
 export default userSlice.reducer
